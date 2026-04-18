@@ -4,12 +4,31 @@ A production-ready frontend project template using React, TypeScript, and Vite w
 
 ## Tech Stack
 
-- **Framework**: React 19 + TypeScript 6
-- **Build Tool**: Vite 8
+- **Framework**: React + TypeScript
+- **Build Tool**: Vite
 - **Linting**: ESLint 9 (flat config) with strict TypeScript, React, JSX a11y, and import rules
-- **Formatting**: Prettier 3
-- **Git Hooks**: Husky 9 (pre-commit, pre-push)
+- **Formatting**: Prettier
+- **Git Hooks**: Husky (pre-commit, pre-push)
 - **Staged Linting**: lint-staged
+- **Runtime**: Node.js 18+
+- **State Management**: Redux Toolkit (RTK)
+- **Data Fetching**: RTK Query
+- **UI & Styling**:
+  - MUI (Material-UI) + Emotion
+  - CSS-in-JS for component scoping
+- **Forms & Validation**
+  - React Hook Form
+  - Zod
+- **API & Data**
+  - MSW for HTTP Mocking
+- **Internationalization**: react-i18next
+- **Security & Authentication**
+  - jwt-decode for JWT decoding
+  - js-cookie for cookie management
+- **Environment Management**: dotenv
+- **Testing**
+  - Vitest: unit & component testing
+  - React Testing Library: Component Testing
 
 ## Project Structure
 
@@ -89,3 +108,122 @@ On commit, staged files are processed:
 
 - `*.{ts,tsx}` → ESLint fix + Prettier format
 - `*.{json,md,css,html}` → Prettier format
+
+---
+
+<details>
+<summary><strong>🎨 Theme System (MUI)</strong></summary>
+
+## Overview
+
+The theme system is built on [MUI (Material UI)](https://mui.com/) with Emotion and lives entirely in `src/theme/`.
+
+```
+src/theme/
+├── index.ts              # Public exports
+├── theme.ts              # createAppTheme() factory — entry point
+├── palette.ts            # Light & dark colour tokens
+├── typography.ts         # Font family, sizes, weights
+├── overrides.ts          # Per-component style overrides
+├── ThemeProvider.tsx     # AppThemeProvider component
+└── ThemeModeContext.ts   # useThemeMode() hook + context
+```
+
+## How It Works
+
+`createAppTheme(mode)` builds the MUI theme from the three token files and applies the component overrides. `AppThemeProvider` wraps the app, manages the active mode in state, and exposes `useThemeMode()` so any component can read or change the mode.
+
+## Using the Theme in Components
+
+```tsx
+// Spacing, palette & breakpoints via sx prop
+;<Box sx={{ mt: 2, color: 'primary.main', display: { xs: 'block', md: 'flex' } }} />
+
+// Accessing the theme object directly
+import { useTheme } from '@mui/material/styles'
+const theme = useTheme()
+console.log(theme.palette.primary.main)
+
+// Reading / toggling colour mode
+import { useThemeMode } from '@/theme'
+const { mode, toggleMode } = useThemeMode()
+```
+
+## Enabling Dark Mode
+
+Dark mode is fully wired up — just toggle it:
+
+```tsx
+// Default to dark on app start
+<AppThemeProvider defaultMode="dark">…</AppThemeProvider>
+
+// Toggle at runtime (e.g. a settings button)
+const { toggleMode } = useThemeMode()
+<IconButton onClick={toggleMode}><DarkModeIcon /></IconButton>
+```
+
+Dark colour tokens are in `src/theme/palette.ts` → `darkPalette`. Extend that object to override any colour.
+
+## Customising the Theme
+
+| What to change                | Where                                                   |
+| ----------------------------- | ------------------------------------------------------- |
+| Brand colours                 | `src/theme/palette.ts` → `lightPalette` / `darkPalette` |
+| Font family / sizes           | `src/theme/typography.ts`                               |
+| Component defaults & styles   | `src/theme/overrides.ts`                                |
+| Breakpoints / spacing / shape | `src/theme/theme.ts` → `createAppTheme` object          |
+
+### Example — Custom Primary Colour
+
+```ts
+// src/theme/palette.ts
+export const lightPalette: PaletteOptions = {
+  primary: { main: '#6200ea' },   // ← change this
+  …
+}
+```
+
+### Example — Component Override
+
+```ts
+// src/theme/overrides.ts  →  MuiButton.styleOverrides.root
+root: {
+  borderRadius: 4,
+  textTransform: 'uppercase',
+}
+```
+
+### Example — Adding a New Breakpoint
+
+```ts
+// src/theme/theme.ts  →  createAppTheme()
+breakpoints: {
+  values: { xs: 0, sm: 480, md: 768, lg: 1024, xl: 1280 },
+},
+```
+
+## Atom Components
+
+Three placeholder atoms wrap their MUI counterparts. Use them app-wide so global style tweaks only need a single change.
+
+| Atom       | File                          | MUI base       |
+| ---------- | ----------------------------- | -------------- |
+| `<Button>` | `components/atoms/Button.tsx` | `MuiButton`    |
+| `<Input>`  | `components/atoms/Input.tsx`  | `MuiTextField` |
+| `<Card>`   | `components/atoms/Card.tsx`   | `MuiCard`      |
+
+## PageTemplate
+
+`<PageTemplate>` is the base layout for every page:
+
+```tsx
+import { PageTemplate } from '@/components/templates'
+
+;<PageTemplate header={<AppBar />} footer={<Footer />} maxWidth="xl">
+  {/* page content */}
+</PageTemplate>
+```
+
+Props: `header`, `footer`, `maxWidth` (default `'lg'`), `disableGutter`.
+
+</details>
