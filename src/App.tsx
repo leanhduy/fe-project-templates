@@ -1,8 +1,8 @@
 import Typography from '@mui/material/Typography'
 
-import { Button, Card, Input } from './components/atoms'
-import { PageTemplate } from './components/templates'
-import { AppThemeProvider } from './theme'
+import { Button, Card, Input } from '@/components/atoms'
+import { PageTemplate } from '@/components/templates'
+import { AppThemeProvider } from '@/theme'
 
 function AppContent() {
   return (

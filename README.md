@@ -10,6 +10,7 @@ A production-ready frontend project template using React, TypeScript, and Vite w
 - **Formatting**: Prettier
 - **Git Hooks**: Husky (pre-commit, pre-push)
 - **Staged Linting**: lint-staged
+- **Path Aliases + Barrel Exports**: `vite-tsconfig-paths`. Configured for clean imports
 - **Runtime**: Node.js 18+
 - **State Management**: Redux Toolkit (RTK)
 - **Data Fetching**: RTK Query
@@ -141,11 +142,13 @@ src/theme/
 
 // Accessing the theme object directly
 import { useTheme } from '@mui/material/styles'
+
 const theme = useTheme()
 console.log(theme.palette.primary.main)
 
 // Reading / toggling colour mode
 import { useThemeMode } from '@/theme'
+
 const { mode, toggleMode } = useThemeMode()
 ```
 
@@ -153,13 +156,14 @@ const { mode, toggleMode } = useThemeMode()
 
 Dark mode is fully wired up — just toggle it:
 
-```tsx
+```typescript jsx
 // Default to dark on app start
 <AppThemeProvider defaultMode="dark">…</AppThemeProvider>
 
 // Toggle at runtime (e.g. a settings button)
-const { toggleMode } = useThemeMode()
-<IconButton onClick={toggleMode}><DarkModeIcon /></IconButton>
+const {toggleMode} = useThemeMode()
+< IconButton
+onClick = {toggleMode} > < DarkModeIcon / > < /IconButton>
 ```
 
 Dark colour tokens are in `src/theme/palette.ts` → `darkPalette`. Extend that object to override any colour.
@@ -178,8 +182,7 @@ Dark colour tokens are in `src/theme/palette.ts` → `darkPalette`. Extend that 
 ```ts
 // src/theme/palette.ts
 export const lightPalette: PaletteOptions = {
-  primary: { main: '#6200ea' },   // ← change this
-  …
+  primary: { main: '#6200ea' }, // ← change this
 }
 ```
 
@@ -188,8 +191,10 @@ export const lightPalette: PaletteOptions = {
 ```ts
 // src/theme/overrides.ts  →  MuiButton.styleOverrides.root
 root: {
-  borderRadius: 4,
-  textTransform: 'uppercase',
+    borderRadius: 4,
+        textTransform
+:
+    'uppercase',
 }
 ```
 
@@ -198,8 +203,20 @@ root: {
 ```ts
 // src/theme/theme.ts  →  createAppTheme()
 breakpoints: {
-  values: { xs: 0, sm: 480, md: 768, lg: 1024, xl: 1280 },
-},
+    values: {
+        xs: 0, sm
+    :
+        480, md
+    :
+        768, lg
+    :
+        1024, xl
+    :
+        1280
+    }
+,
+}
+,
 ```
 
 ## Atom Components

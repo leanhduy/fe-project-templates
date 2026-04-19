@@ -15,7 +15,7 @@ export type ThemeMode = 'light' | 'dark'
  * To add dark-mode tokens, edit `src/theme/palette.ts` → `darkPalette`.
  * To add breakpoints or spacing overrides, extend the object below.
  */
-export const createAppTheme = (mode: ThemeMode = 'light') =>
+export const createAppTheme = (mode: ThemeMode = 'dark') =>
   createTheme({
     palette: mode === 'dark' ? darkPalette : lightPalette,
     typography,
