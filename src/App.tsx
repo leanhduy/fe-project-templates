@@ -1,7 +1,13 @@
+// 1. External Libraries (alphabetical)
 import Typography from '@mui/material/Typography'
+import { Provider } from 'react-redux'
+import { PersistGate } from 'redux-persist/integration/react'
 
+// 2. Internal Project Aliases (alphabetical)
 import { Button, Card, Input } from '@/components/atoms'
+import Sample from '@/components/atoms/Sample'
 import { PageTemplate } from '@/components/templates'
+import { persistor, store } from '@/store'
 import { AppThemeProvider } from '@/theme'
 
 function AppContent() {
@@ -14,10 +20,15 @@ function AppContent() {
       {/* Placeholder atoms — delete when building real features */}
       <Card sx={{ mb: 2, maxWidth: 400 }}>
         <Typography variant="h6" gutterBottom>
-          Placeholder Card
+          Sample Atom
         </Typography>
         <Input label="Placeholder Input" fullWidth sx={{ mb: 2 }} />
         <Button variant="contained">Placeholder Button</Button>
+      </Card>
+
+      {/* Placeholder sample component with rtk usage*/}
+      <Card sx={{ mb: 2, maxWidth: 400 }}>
+        <Sample />
       </Card>
     </PageTemplate>
   )
@@ -31,7 +42,14 @@ function AppContent() {
 function App() {
   return (
     <AppThemeProvider>
-      <AppContent />
+      <Provider store={store}>
+        <PersistGate
+          // loading={<LoadingScreen/>}  // TODO: Need to add a loading screen for when the persisted state is being rehydrated
+          persistor={persistor}
+        >
+          <AppContent />
+        </PersistGate>
+      </Provider>
     </AppThemeProvider>
   )
 }

@@ -1,12 +1,12 @@
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
-import { useState, useMemo } from 'react'
 import type { ReactNode } from 'react'
+import { useMemo, useState } from 'react'
 
-import { createAppTheme } from './theme'
 import type { ThemeMode } from './theme'
-import { ThemeModeContext } from './ThemeModeContext'
+import { createAppTheme } from './theme'
 import type { ThemeModeContextValue } from './ThemeModeContext'
+import { ThemeModeContext } from './ThemeModeContext'
 
 export interface AppThemeProviderProps {
   children: ReactNode
@@ -19,7 +19,7 @@ export interface AppThemeProviderProps {
  * Drop-in dark mode: pass `defaultMode="dark"` or call `toggleMode()` from
  * a child component (e.g. a settings button) via `useThemeMode()`.
  */
-export function AppThemeProvider({ children, defaultMode = 'light' }: AppThemeProviderProps) {
+export function AppThemeProvider({ children, defaultMode = 'dark' }: AppThemeProviderProps) {
   const [mode, setMode] = useState<ThemeMode>(defaultMode)
 
   const theme = useMemo(() => createAppTheme(mode), [mode])
