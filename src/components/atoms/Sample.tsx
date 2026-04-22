@@ -1,11 +1,11 @@
 import styled from '@emotion/styled'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import { useEffect } from 'react'
 
 import { Button } from '@/components/atoms/Button.tsx'
-import { fetchTodos, increment, reset, selectSample } from '@/features/sample/sampleSlice.ts'
+import { increment, reset, selectSample } from '@/features/sample/sampleSlice'
 import { useAppDispatch, useAppSelector } from '@/hooks'
+import { useGetAllTodosQuery } from '@/services/sampleApi.ts'
 
 interface SampleProps {
   className?: string
@@ -14,12 +14,7 @@ interface SampleProps {
 const Sample = ({ className }: SampleProps) => {
   const dispatch = useAppDispatch()
   const sample = useAppSelector(selectSample)
-
-  // Demonstrate fetching todos on component mount
-  useEffect(() => {
-    // Note: Explicitly mark the promise as ignored
-    void dispatch(fetchTodos())
-  }, [dispatch])
+  const { data: todos, isLoading: todosLoading } = useGetAllTodosQuery(undefined)
 
   return (
     <>
@@ -36,7 +31,8 @@ const Sample = ({ className }: SampleProps) => {
           </div>
         </Box>
         <Box className="card-container">
-          <Typography variant="h3">Todos Count: {sample.todos.length}</Typography>
+          {todosLoading && <Typography variant="h3">Fetching Todos...</Typography>}
+          {todos && <Typography variant="h3">Todos Count: {todos.length}</Typography>}
         </Box>
       </Box>
     </>

@@ -3,6 +3,7 @@ import { persistReducer, persistStore } from 'redux-persist'
 import storage from 'redux-persist/es/storage' // defaults to localStorage for web
 
 import sampleReducer from '@/features/sample/sampleSlice.ts'
+import { sampleApi } from '@/services/sampleApi.ts'
 
 const persistConfig = {
   key: 'root',
@@ -13,6 +14,8 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   sample: sampleReducer,
+  [sampleApi.reducerPath]: sampleApi.reducer,
+
   // Add more slices here
 })
 
@@ -23,8 +26,10 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false, // Needed for redux-persist + Date objects
-    }),
-  // TODO: will add RTK Query's api middleware here when we add RTK Query
+    }).concat(
+      sampleApi.middleware,
+      // Other RTK Query middlewares can be added here as needed
+    ),
 })
 
 export const persistor = persistStore(store)
