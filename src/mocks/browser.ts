@@ -10,7 +10,7 @@ export const handlers = [
       return HttpResponse.json(
         {
           id: 1,
-          username: 'admin',
+          name: 'admin',
           email: 'admin@gmail.com',
           avatar: 'https://i.pravatar.cc/150?img=2',
           createdAt: new Date().toISOString(),

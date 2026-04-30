@@ -2,14 +2,16 @@
 import Typography from '@mui/material/Typography'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
+import { Toaster } from 'sonner'
 
-// 2. Internal Project Aliases (alphabetical)
 import { Button, Card, Input } from '@/components/atoms'
 import Sample from '@/components/atoms/Sample'
 import LoginForm from '@/components/molecules/LoginForm.tsx'
 import { PageTemplate } from '@/components/templates'
 import { persistor, store } from '@/store'
 import { AppThemeProvider } from '@/theme'
+
+// 2. Internal Project Aliases (alphabetical)
 
 function AppContent() {
   return (
@@ -56,6 +58,7 @@ function App() {
           // loading={<LoadingScreen/>}  // TODO: Need to add a loading screen for when the persisted state is being rehydrated
           persistor={persistor}
         >
+          <Toaster richColors closeButton />
           <AppContent />
         </PersistGate>
       </Provider>

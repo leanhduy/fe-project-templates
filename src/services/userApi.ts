@@ -3,13 +3,14 @@
  */
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
+import type { LoginInput } from '@/components/molecules/LoginForm'
 import type { User } from '@/types'
 
 export const userApi = createApi({
   reducerPath: 'userApi',
   baseQuery: fetchBaseQuery({ baseUrl: '/' }),
   endpoints: (build) => ({
-    login: build.mutation<User, { username: string; password: string }>({
+    login: build.mutation<User, LoginInput>({
       query: (credentials) => {
         return {
           url: 'api/v1/login',

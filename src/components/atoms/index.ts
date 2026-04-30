@@ -11,3 +11,6 @@ export type { InputProps } from './Input'
 
 export { Card } from './Card'
 export type { CardProps } from './Card'
+
+export { FormTextInput } from './FormTextInput'
+export type { FormTextInputProps } from './FormTextInput'
