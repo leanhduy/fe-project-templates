@@ -6,6 +6,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 // 2. Internal Project Aliases (alphabetical)
 import { Button, Card, Input } from '@/components/atoms'
 import Sample from '@/components/atoms/Sample'
+import LoginForm from '@/components/molecules/LoginForm.tsx'
 import { PageTemplate } from '@/components/templates'
 import { persistor, store } from '@/store'
 import { AppThemeProvider } from '@/theme'
@@ -29,6 +30,14 @@ function AppContent() {
       {/* Placeholder sample component with rtk usage*/}
       <Card sx={{ mb: 2, maxWidth: 400 }}>
         <Sample />
+      </Card>
+
+      {/*  Sample Login Form */}
+      <Card sx={{ mb: 2, maxWidth: 400 }}>
+        <Typography variant="h6" gutterBottom>
+          Sample Login Form
+        </Typography>
+        <LoginForm />
       </Card>
     </PageTemplate>
   )

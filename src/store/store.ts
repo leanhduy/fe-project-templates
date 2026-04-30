@@ -4,6 +4,7 @@ import storage from 'redux-persist/es/storage' // defaults to localStorage for w
 
 import sampleReducer from '@/features/sample/sampleSlice.ts'
 import { sampleApi } from '@/services/sampleApi.ts'
+import { userApi } from '@/services/userApi.ts'
 
 const persistConfig = {
   key: 'root',
@@ -15,7 +16,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   sample: sampleReducer,
   [sampleApi.reducerPath]: sampleApi.reducer,
-
+  [userApi.reducerPath]: userApi.reducer,
   // Add more slices here
 })
 
@@ -29,6 +30,7 @@ export const store = configureStore({
     }).concat(
       sampleApi.middleware,
       // Other RTK Query middlewares can be added here as needed
+      userApi.middleware,
     ),
 })
 
