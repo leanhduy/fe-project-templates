@@ -61,7 +61,14 @@ export default defineConfig([
       'import/order': [
         'error',
         {
-          groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+          groups: [
+            'builtin', // Node.js built-in modules
+            'external', // npm packagesƒ
+            'internal', // Local imports (@/*)
+            'parent', // ../
+            'sibling', // ./
+            'index', // ./index
+          ],
           'newlines-between': 'always',
           alphabetize: { order: 'asc', caseInsensitive: true },
         },

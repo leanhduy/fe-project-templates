@@ -1,6 +1,9 @@
 import styled from '@emotion/styled'
+import { zodResolver } from '@hookform/resolvers/zod'
+import Typography from '@mui/material/Typography'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
+import * as z from 'zod'
 
 import { Button, FormTextInput } from '@/components/atoms'
 import { useLoginMutation } from '@/services/userApi.ts'
@@ -16,6 +19,14 @@ export interface LoginInput {
   password: string
 }
 
+// Define the schema
+const schema = z.object({
+  username: z.string().min(3, 'Username must be at least 3 characters'),
+  password: z.string().min(3, 'Password must be at least 3 characters'),
+})
+
+type LoginFormSchema = z.infer<typeof schema>
+
 /**
  * Molecule: LoginForm
  *
@@ -26,36 +37,52 @@ const LoginForm = ({ className }: LoginFormProps) => {
   const {
     control,
     handleSubmit,
-    // formState: { errors },
-  } = useForm<LoginInput>()
+    formState: { errors },
+  } = useForm<LoginFormSchema>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      username: '',
+      password: '',
+    },
+  })
 
-  const onSubmit: SubmitHandler<LoginInput> = async (data) => {
-    // Print the form data to the console
-    const doLogin = async () => {
-      const res = await login(data)
-      if (res.error) {
-        const message = getErrorMessage(res.error)
-        toast.error(message)
-      } else {
-        toast.success(`Welcome Back, ${res.data.name}!`)
-      }
-    }
+  const onSubmit: SubmitHandler<LoginFormSchema> = (data) => {
+    const res = login(data) // This retuns a Promise
 
-    await doLogin()
+    // Handle the promise
+    res
+      .then((data) => {
+        if (data.error) {
+          toast.error(getErrorMessage(data.error))
+        } else {
+          toast.success('Login successful!')
+        }
+      })
+      .catch((error: unknown) => {
+        toast.error(getErrorMessage(error))
+      })
   }
 
   return (
     <form
-      onSubmit={void handleSubmit(onSubmit)} // Q&A: Is this the HOF pattern? Why do we need to wrap onSubmit with handleSubmit?
+      onSubmit={(e) => {
+        void handleSubmit(onSubmit)(e)
+      }}
       className={className}
     >
       <div className={'form-input'}>
         <label htmlFor="username">Username</label>
         <FormTextInput name="username" control={control} />
+        <Typography color="error" className="error">
+          {errors.username?.message}
+        </Typography>
       </div>
       <div className={'form-input'}>
         <label htmlFor="password">Password</label>
         <FormTextInput name="password" control={control} />
+        <Typography color="error" className="error">
+          {errors.password?.message}
+        </Typography>
       </div>
 
       <Button type="submit" variant="contained" fullWidth disabled={isLoading}>
@@ -79,12 +106,11 @@ const StyledLoginForm = styled(LoginForm)`
     gap: 8px;
     align-items: center;
   }
+  .error {
+  }
 
   label {
     min-width: 80px;
-  }
-  input {
-    flex: 1;
   }
 `
 

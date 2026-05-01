@@ -35,7 +35,7 @@ function AppContent() {
       </Card>
 
       {/*  Sample Login Form */}
-      <Card sx={{ mb: 2, maxWidth: 400 }}>
+      <Card sx={{ mb: 2, maxWidth: 800 }}>
         <Typography variant="h6" gutterBottom>
           Sample Login Form
         </Typography>

@@ -24,7 +24,7 @@ export const FormTextInput = <T extends FieldValues>({
     <Controller
       name={name as Path<T>}
       control={control}
-      render={({ field }) => <TextField {...field} label={label} type={type} fullWidth />}
+      render={({ field }) => <TextField {...field} label={label} type={type} />}
     />
   )
 }
