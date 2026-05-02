@@ -1,12 +1,14 @@
 // 1. External Libraries (alphabetical)
 import Typography from '@mui/material/Typography'
+import { useTranslation } from 'react-i18next'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { Toaster } from 'sonner'
 
 import { Button, Card, Input } from '@/components/atoms'
+import LanguageSwitch from '@/components/atoms/LanguageSwitch'
 import Sample from '@/components/atoms/Sample'
-import LoginForm from '@/components/molecules/LoginForm.tsx'
+import LoginForm from '@/components/molecules/LoginForm'
 import { PageTemplate } from '@/components/templates'
 import { persistor, store } from '@/store'
 import { AppThemeProvider } from '@/theme'
@@ -14,6 +16,8 @@ import { AppThemeProvider } from '@/theme'
 // 2. Internal Project Aliases (alphabetical)
 
 function AppContent() {
+  const { t } = useTranslation()
+
   return (
     <PageTemplate>
       <Typography variant="h1" gutterBottom>
@@ -37,9 +41,17 @@ function AppContent() {
       {/*  Sample Login Form */}
       <Card sx={{ mb: 2, maxWidth: 800 }}>
         <Typography variant="h6" gutterBottom>
-          Sample Login Form
+          {t('sample.loginFormSectionTitle')}
         </Typography>
         <LoginForm />
+      </Card>
+
+      {/*  Sample Language toggle with i18next*/}
+      <Card sx={{ mb: 2, maxWidth: 800 }}>
+        <Typography variant="h6" gutterBottom>
+          {t('sample.languageSwitchSectionTitle')}
+        </Typography>
+        <LanguageSwitch />
       </Card>
     </PageTemplate>
   )

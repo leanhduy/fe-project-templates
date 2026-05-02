@@ -1,6 +1,13 @@
+// npm packages
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 
+// internal imports (e.g., @/)
+import '@/locales/i18n'
+
+// Parent (e.g., ../)
+
+// siblings (e.g., ./)
 import App from './App.tsx'
 
 const rootElement = document.getElementById('root')

@@ -63,7 +63,7 @@ export default defineConfig([
         {
           groups: [
             'builtin', // Node.js built-in modules
-            'external', // npm packagesƒ
+            'external', // npm packages
             'internal', // Local imports (@/*)
             'parent', // ../
             'sibling', // ./
